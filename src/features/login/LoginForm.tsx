@@ -28,10 +28,19 @@ function LoginForm() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-8">
-          <label htmlFor="email" className="input-label">
+    <div className="container flex flex-col justify-around">
+      <h1 className=" text-3xl">Login</h1>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex max-w-3xl flex-col justify-center gap-y-5 "
+      >
+        {/* start email */}
+        <div className="">
+          <label
+            htmlFor="email"
+            className={`input-label ${errors.email && "text-red-500"}`}
+          >
             Email
           </label>
           <input
@@ -39,20 +48,22 @@ function LoginForm() {
             id="email"
             placeholder="name@email.com"
             aria-invalid={!!errors.email}
-            className={`input relative ${
-              errors.email && "border-red-400 text-red-300"
-            }`}
+            className={`input ${errors.email && "border-red-400 text-red-300"}`}
             {...register("email")}
           />
           {errors.email && (
-            <span role="alert" className="absolute mt-1 text-sm text-red-500">
+            <span role="alert" className="mt-1 text-sm text-red-500">
               {errors.email.message}
             </span>
           )}
         </div>
-
-        <div className="mb-8">
-          <label htmlFor="password" className="input-label">
+        {/* end email */}
+        {/* start password */}
+        <div className="">
+          <label
+            htmlFor="password"
+            className={`input-label ${errors.password && "text-red-500"}`}
+          >
             Password
           </label>
           <input
@@ -60,18 +71,16 @@ function LoginForm() {
             id="password"
             placeholder="Type your password"
             aria-invalid={!!errors.password}
-            className={`input relative ${
-              errors.password && "border-red-400 text-red-300"
-            }`}
+            className={`input ${errors.password && "border-red-400 text-red-300"}`}
             {...register("password")}
           />
           {errors.password && (
-            <span role="alert" className="absolute mt-1 text-sm text-red-500">
+            <span role="alert" className="mt-1 text-sm text-red-500">
               {errors.password.message}
             </span>
           )}
         </div>
-
+        {/* end password */}
         <button type="submit" className="submit-button">
           Submit
         </button>
