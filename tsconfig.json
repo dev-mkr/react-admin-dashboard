@@ -22,7 +22,7 @@
     /*  add absolute imports for src folder */
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"],
