@@ -1,6 +1,11 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const schema = yup.object().shape({
   email: yup.string().email().required("A valid email is required."),
@@ -28,64 +33,64 @@ function LoginForm() {
   };
 
   return (
-    <div className="container flex flex-col justify-around">
-      <h1 className=" text-3xl">Login</h1>
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex max-w-3xl flex-col justify-center gap-y-5 "
-      >
-        {/* start email */}
-        <div className="">
-          <label
-            htmlFor="email"
-            className={`input-label ${errors.email && "text-red-500"}`}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex max-w-3xl flex-col justify-center gap-y-5 "
+    >
+      {/* start email */}
+      <div className="grid gap-y-2">
+        <Label htmlFor="email" className={cn("", { "text-destructive": errors.email })}>
+          Email
+        </Label>
+        <Input
+          type="text"
+          id="email"
+          autoFocus
+          placeholder="name@email.com"
+          aria-invalid={!!errors.email}
+          className={cn("", { "border-destructive": errors.email })}
+          {...register("email")}
+        />
+        {errors.email && (
+          <span
+            role="alert"
+            className={cn("text-sm", { "text-destructive": errors.email })}
           >
-            Email
-          </label>
-          <input
-            type="text"
-            id="email"
-            placeholder="name@email.com"
-            aria-invalid={!!errors.email}
-            className={`input ${errors.email && "border-red-400 text-red-300"}`}
-            {...register("email")}
-          />
-          {errors.email && (
-            <span role="alert" className="mt-1 text-sm text-red-500">
-              {errors.email.message}
-            </span>
-          )}
-        </div>
-        {/* end email */}
-        {/* start password */}
-        <div className="">
-          <label
-            htmlFor="password"
-            className={`input-label ${errors.password && "text-red-500"}`}
+            {errors.email.message}
+          </span>
+        )}
+      </div>
+      {/* end email */}
+      {/* start password */}
+      <div className="grid gap-y-2">
+        <Label
+          htmlFor="password"
+          className={cn("", { "text-destructive": errors.password })}
+        >
+          Password
+        </Label>
+        <Input
+          type="password"
+          id="password"
+          placeholder="Type your password"
+          aria-invalid={!!errors.password}
+          className={cn("", { "border-destructive": errors.password })}
+          {...register("password")}
+        />
+        {errors.password && (
+          <span
+            role="alert"
+            className={cn("text-sm", { "text-destructive": errors.password })}
           >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Type your password"
-            aria-invalid={!!errors.password}
-            className={`input ${errors.password && "border-red-400 text-red-300"}`}
-            {...register("password")}
-          />
-          {errors.password && (
-            <span role="alert" className="mt-1 text-sm text-red-500">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-        {/* end password */}
-        <button type="submit" className="submit-button">
-          Submit
-        </button>
-      </form>
-    </div>
+            {errors.password.message}
+          </span>
+        )}
+      </div>
+      {/* end password */}
+      <Button className="gap-x-2 bg-btn-gradient font-bold text-slate-900">
+        Login to Your Account <ArrowRight />
+      </Button>
+    </form>
   );
 }
 

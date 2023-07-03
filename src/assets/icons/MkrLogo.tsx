@@ -1,0 +1,17 @@
+import { ICON_PROPS_TYPES } from "./icons.constant";
+
+export const MkrLogo: ICON_PROPS_TYPES = (props) => {
+  return (
+    <svg
+      viewBox="0 0 294 293"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M55.4453 102.765H0V217.002H55.4453V102.765Z" />
+      <path d="M173.028 102.765H117.582V217.002H173.028V102.765Z" />
+      <path d="M236.599 0H0V57.3573H117.582H236.599V0Z" />
+      <path d="M236.599 293H293.956V57.3573H236.599V293Z" />
+    </svg>
+  );
+};
