@@ -4,14 +4,15 @@ import AuthHeader from "../auth/AuthHeader";
 
 type PropsType = {
   children: React.ReactNode;
+  headingText: string;
 };
 
-const AuthLayout = ({ children }: PropsType) => {
+const AuthLayout = ({ children, headingText }: PropsType) => {
   return (
-    <main className=" relative flex h-screen max-h-screen flex-col justify-center gap-y-12 sm:gap-y-20">
+    <main className=" relative flex h-screen max-h-screen flex-col gap-y-10   sm:justify-evenly lg:gap-y-16">
       <AuthHeader />
-      <h1 className="text-center text-3xl font-semibold tracking-tight sm:text-5xl">
-        Login to your account
+      <h1 className="pt-12 text-center text-3xl font-semibold tracking-tight sm:text-5xl sm:max-lg:pt-20">
+        {headingText}
       </h1>
 
       <div className="container relative flex flex-wrap gap-x-16 gap-y-10 sm:flex-nowrap lg:gap-x-60 xl:px-48 [&>*]:w-full">

@@ -2,10 +2,10 @@ import { MkrLogo } from "@/assets/icons/MkrLogo";
 
 const Footer = () => {
   return (
-    <footer className="container absolute bottom-2 flex justify-between text-sm text-muted-foreground sm:bottom-8 sm:text-base">
+    <footer className="container flex justify-between  pb-5 text-sm text-muted-foreground  sm:text-base">
       <a href="#">Privacy Policy</a>
       <span className="flex items-center gap-x-3">
-        Created with 💚 by{" "}
+        Created with 💚 by
         <a
           href="https://dev-mkr.me"
           aria-label="visit the creator's personal portfolio"
