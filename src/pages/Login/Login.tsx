@@ -4,7 +4,7 @@ import AuthProviders from "@/components/auth/AuthProviders";
 
 const Login = () => {
   return (
-    <AuthLayout>
+    <AuthLayout headingText="Login to your account">
       <LoginForm />
       <AuthProviders operationName="Sign in" />
     </AuthLayout>

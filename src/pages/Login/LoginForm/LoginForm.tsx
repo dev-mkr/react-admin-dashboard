@@ -23,7 +23,7 @@ function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    mode: "onBlur",
+    mode: "onSubmit",
     resolver: yupResolver(schema),
   });
 
@@ -33,10 +33,7 @@ function LoginForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex max-w-3xl flex-col justify-center gap-y-5 "
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-y-5">
       {/* start email */}
       <div className="grid gap-y-2">
         <Label htmlFor="email" className={cn("", { "text-destructive": errors.email })}>
