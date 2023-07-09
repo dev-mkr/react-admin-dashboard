@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const schema = yup.object().shape({
   email: yup.string().email().required("A valid email is required."),
@@ -36,7 +37,10 @@ function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-y-5">
       {/* start email */}
       <div className="grid gap-y-2">
-        <Label htmlFor="email" className={cn("", { "text-destructive": errors.email })}>
+        <Label
+          htmlFor="email"
+          className={cn("", { "text-destructive": errors.email })}
+        >
           Email
         </Label>
         <Input
@@ -87,6 +91,12 @@ function LoginForm() {
       <Button className="gap-x-2 bg-btn-gradient font-bold text-slate-900">
         Login to Your Account <ArrowRight />
       </Button>
+      <span className="text-muted-foreground">
+        Don’t have an account yet?{" "}
+        <Link to="/register" className="text- text-foreground">
+          Register now!
+        </Link>
+      </span>
     </form>
   );
 }
