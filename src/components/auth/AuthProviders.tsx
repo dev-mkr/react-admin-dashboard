@@ -8,22 +8,30 @@ type PropsType = {
 
 function AuthProviders(props: PropsType) {
   const OPERATION_NAME = props.operationName;
+  const RenderButton = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <Button variant="outline">
+        <span className="flex min-w-[10rem]">{children}</span>
+      </Button>
+    );
+  };
+
   return (
     <section className="flex flex-col  gap-y-5 ">
-      <div className="relative border-t text-xs ">
+      <div className="relative border-t text-xs">
         <span className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2  bg-background px-2 uppercase text-muted-foreground">
           Or continue with
         </span>
       </div>
-      <Button variant="outline">
+      <RenderButton>
         <Google className="mr-2 h-4 w-4" /> {OPERATION_NAME} with google
-      </Button>
-      <Button variant="outline">
+      </RenderButton>
+      <RenderButton>
         <GitHub className="mr-2 h-4 w-4" /> {OPERATION_NAME} with Github
-      </Button>
-      <Button variant="outline">
+      </RenderButton>
+      <RenderButton>
         <Facebook className="mr-2 h-4 w-4" /> {OPERATION_NAME} with Facebook
-      </Button>
+      </RenderButton>
     </section>
   );
 }
