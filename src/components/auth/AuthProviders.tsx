@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/button";
 import { Google } from "@/assets/icons/Google";
 import { GitHub } from "@/assets/icons/GitHub";
 import { Facebook } from "@/assets/icons/Facebook";
