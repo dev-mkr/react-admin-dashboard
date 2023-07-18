@@ -1,4 +1,4 @@
-import { Scratch } from "@/assets/icons/Scratch";
+import { ReactComponent as Scratch } from "@/assets/icons/scratch.svg";
 import Footer from "../Footer";
 import AuthHeader from "../auth/AuthHeader";
 
