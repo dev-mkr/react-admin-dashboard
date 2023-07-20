@@ -11,9 +11,8 @@ import { cn } from "@/lib/utils";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/useAuthStore";
-import { axiosPrivate } from "@/api/axios";
 import { useState } from "react";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
 const schema = yup.object().shape({
   email: yup.string().email().required("A valid email is required."),
@@ -48,7 +47,9 @@ function LoginForm() {
   const onSubmit = async (values: loginFormValues) => {
     setIsLoading(true);
     try {
-      const response = await axiosPrivate.post(LOGIN_URL, values);
+      const response = await axios.post(LOGIN_URL, values, {
+        withCredentials: true,
+      });
       setAuth(response?.data);
       setIsLoading(false);
       navigate(from, { replace: true });

@@ -1,5 +1,5 @@
 import useAuthStore from "@/store/useAuthStore";
-import { axiosPrivate } from "../api/axios";
+import axios from "axios";
 import { useEffect } from "react";
 
 const useAxiosPrivate = () => {
@@ -7,6 +7,7 @@ const useAxiosPrivate = () => {
   const refreshTheToken = useAuthStore(
     (state) => state.actions.refreshTheToken
   );
+  const axiosPrivate = axios;
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
@@ -37,7 +38,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [auth?.access_token, refreshTheToken]);
+  }, [auth?.access_token, axiosPrivate, refreshTheToken]);
 
   return axiosPrivate;
 };

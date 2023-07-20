@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { AxiosError } from "axios";
-import { axiosPrivate } from "@/api/axios";
+import axios, { AxiosError } from "axios";
 
 type AuthDataType = {
   access_token: string;
@@ -13,7 +12,7 @@ type AuthState = {
   actions: {
     setAuth: (payload: AuthDataType) => void;
     logOut: () => void;
-    refreshTheToken: () => void;
+    refreshTheToken: () => Promise<string>;
   };
 };
 
@@ -24,13 +23,13 @@ const useAuthStore = create<AuthState>()(
       setAuth: (payload) => set(() => ({ auth: payload })),
 
       logOut: async () => {
-        await axiosPrivate.post("/auth/logout");
+        await axios.post("/auth/logout", null, { withCredentials: true });
         set(() => ({ auth: null }));
       },
 
       refreshTheToken: async () => {
         try {
-          const response = await axiosPrivate.get("/auth/refresh", {
+          const response = await axios.get("/auth/refresh", {
             withCredentials: true,
           });
 

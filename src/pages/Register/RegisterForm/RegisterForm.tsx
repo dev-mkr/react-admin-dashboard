@@ -9,8 +9,7 @@ import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/useAuthStore";
 import { useState } from "react";
-import { axiosPrivate } from "@/api/axios";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 
 const schema = yup.object().shape({
@@ -53,7 +52,9 @@ function RegisterForm() {
   const onSubmit = async (values: registerFormValues) => {
     setIsLoading(true);
     try {
-      const response = await axiosPrivate.post(REGISTER_URL, values);
+      const response = await axios.post(REGISTER_URL, values, {
+        withCredentials: true,
+      });
       setAuth(response?.data);
       setIsLoading(false);
       navigate("/", { replace: true });
