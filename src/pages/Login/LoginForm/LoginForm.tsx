@@ -1,36 +1,64 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button/button";
 import ArrowRight from "@/assets/icons/ArrowRight";
+import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/useAuthStore";
+import { axiosPrivate } from "@/api/axios";
+import { useState } from "react";
+import { AxiosError } from "axios";
 
 const schema = yup.object().shape({
   email: yup.string().email().required("A valid email is required."),
   password: yup.string().required("Your password is required.").min(6),
 });
 
-type FormValues = {
+type loginFormValues = {
   email: string;
   password: string;
 };
 
+const LOGIN_URL = "/auth/login";
+
 function LoginForm() {
+  const { setAuth } = useAuthStore((state) => state.actions);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+    setError,
+  } = useForm<loginFormValues>({
     mode: "onSubmit",
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-    // handle submitting the form
+  const onSubmit = async (values: loginFormValues) => {
+    setIsLoading(true);
+    try {
+      const response = await axiosPrivate.post(LOGIN_URL, values);
+      setAuth(response?.data);
+      setIsLoading(false);
+      navigate(from, { replace: true });
+    } catch (error) {
+      const errorResponse = error as AxiosError<{ message: string }>;
+      setError("root", {
+        message: errorResponse?.response?.data?.message,
+      });
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -53,10 +81,7 @@ function LoginForm() {
           {...register("email")}
         />
         {errors.email && (
-          <span
-            role="alert"
-            className={cn("text-sm", { "text-destructive": errors.email })}
-          >
+          <span role="alert" className={"text-sm text-destructive"}>
             {errors.email.message}
           </span>
         )}
@@ -79,17 +104,23 @@ function LoginForm() {
           {...register("password")}
         />
         {errors.password && (
-          <span
-            role="alert"
-            className={cn("text-sm", { "text-destructive": errors.password })}
-          >
+          <span role="alert" className={"text-sm text-destructive"}>
             {errors.password.message}
           </span>
         )}
       </div>
       {/* end password */}
-      <Button className="gap-x-2 bg-btn-gradient font-bold text-slate-900">
-        Login to Your Account <ArrowRight />
+      {errors.root && (
+        <span role="alert" className={"text-sm text-destructive"}>
+          {errors.root.message}
+        </span>
+      )}
+      <Button
+        className="gap-x-2 bg-btn-gradient font-bold text-slate-900"
+        disabled={isLoading}
+      >
+        Login to Your Account{" "}
+        {isLoading ? <Loader2 className="animate-spin" /> : <ArrowRight />}
       </Button>
       <span className="text-muted-foreground">
         Don’t have an account yet?{" "}
