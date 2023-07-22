@@ -6,7 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
 import ArrowRight from "@/assets/icons/ArrowRight";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/useAuthStore";
+import { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { Loader2 } from "lucide-react";
 
 const schema = yup.object().shape({
   first_name: yup.string().required("Your first name is required."),
@@ -19,7 +23,7 @@ const schema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords must match."),
 });
 
-type FormValues = {
+type registerFormValues = {
   first_name: string;
   last_name: string;
   email: string;
@@ -27,19 +31,40 @@ type FormValues = {
   password_confirm: string;
 };
 
+const REGISTER_URL = "/auth/register";
+
 function RegisterForm() {
+  const { setAuth } = useAuthStore((state) => state.actions);
+
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+    setError,
+  } = useForm<registerFormValues>({
     mode: "onSubmit",
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-    // handle submitting the form
+  const onSubmit = async (values: registerFormValues) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(REGISTER_URL, values, {
+        withCredentials: true,
+      });
+      setAuth(response?.data);
+      setIsLoading(false);
+      navigate("/", { replace: true });
+    } catch (error) {
+      const errorResponse = error as AxiosError<{ message: string }>;
+      setError("root", {
+        message: errorResponse?.response?.data?.message,
+      });
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -61,12 +86,7 @@ function RegisterForm() {
           {...register("first_name")}
         />
         {errors.first_name && (
-          <span
-            role="alert"
-            className={cn("text-sm", {
-              "text-destructive": errors.first_name,
-            })}
-          >
+          <span role="alert" className={"text-sm text-destructive"}>
             {errors.first_name.message}
           </span>
         )}
@@ -88,12 +108,7 @@ function RegisterForm() {
           {...register("last_name")}
         />
         {errors.last_name && (
-          <span
-            role="alert"
-            className={cn("text-sm", {
-              "text-destructive": errors.last_name,
-            })}
-          >
+          <span role="alert" className={"text-sm text-destructive"}>
             {errors.last_name.message}
           </span>
         )}
@@ -116,10 +131,7 @@ function RegisterForm() {
           {...register("email")}
         />
         {errors.email && (
-          <span
-            role="alert"
-            className={cn("text-sm", { "text-destructive": errors.email })}
-          >
+          <span role="alert" className={"text-sm text-destructive"}>
             {errors.email.message}
           </span>
         )}
@@ -142,10 +154,7 @@ function RegisterForm() {
           {...register("password")}
         />
         {errors.password && (
-          <span
-            role="alert"
-            className={cn("text-sm", { "text-destructive": errors.password })}
-          >
+          <span role="alert" className={"text-sm text-destructive"}>
             {errors.password.message}
           </span>
         )}
@@ -170,19 +179,23 @@ function RegisterForm() {
           {...register("password_confirm")}
         />
         {errors.password_confirm && (
-          <span
-            role="alert"
-            className={cn("text-sm", {
-              "text-destructive": errors.password_confirm,
-            })}
-          >
+          <span role="alert" className={"text-sm text-destructive"}>
             {errors.password_confirm.message}
           </span>
         )}
       </div>
       {/* end password confirm */}
-      <Button className="gap-x-2 bg-btn-gradient font-bold text-slate-900">
-        Create Your Account <ArrowRight />
+      {errors.root && (
+        <span role="alert" className={"text-sm text-destructive"}>
+          {errors.root.message}
+        </span>
+      )}
+      <Button
+        className="gap-x-2 bg-btn-gradient font-bold text-slate-900"
+        disabled={isLoading}
+      >
+        Create Your Account{" "}
+        {isLoading ? <Loader2 className="animate-spin" /> : <ArrowRight />}
       </Button>{" "}
       <span className="text-muted-foreground">
         have an account yet?{" "}

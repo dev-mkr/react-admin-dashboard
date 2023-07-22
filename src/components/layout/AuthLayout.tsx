@@ -16,7 +16,7 @@ const AuthLayout = ({ children, headingText }: PropsType) => {
       </h1>
 
       <div className="container relative flex flex-wrap gap-x-16 gap-y-10 sm:flex-nowrap lg:gap-x-60 xl:px-48 [&>*]:w-full">
-        <Scratch className="absolute left-0 top-1/3 max-sm:hidden" />
+        <Scratch className="absolute left-0 top-1/3 -z-10 max-sm:hidden" />
         {children}
       </div>
       <Footer />

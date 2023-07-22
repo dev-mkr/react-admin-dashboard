@@ -10,7 +10,7 @@ function AuthProviders(props: PropsType) {
   const OPERATION_NAME = props.operationName;
   const RenderButton = ({ children }: { children: React.ReactNode }) => {
     return (
-      <Button variant="outline">
+      <Button variant="outline" title="SOON - under development">
         <span className="flex min-w-[10rem]">{children}</span>
       </Button>
     );
