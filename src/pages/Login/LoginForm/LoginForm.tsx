@@ -13,6 +13,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/useAuthStore";
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const schema = yup.object().shape({
   email: yup.string().email().required("A valid email is required."),
@@ -27,7 +28,7 @@ type loginFormValues = {
 const LOGIN_URL = "/auth/login";
 
 function LoginForm() {
-  const { setAuth } = useAuthStore((state) => state.actions);
+  const { setAuth, setRememberMe } = useAuthStore((state) => state.actions);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -111,6 +112,18 @@ function LoginForm() {
         )}
       </div>
       {/* end password */}
+      {/* start remember me */}
+      <div className="flex items-end space-x-2">
+        <Checkbox
+          id="rememberMe"
+          // onCheckedChange={(e) => localStorage.setItem("rememberMe", e.toString())}
+          onCheckedChange={(e) => setRememberMe(Boolean(e))}
+        />
+        <Label htmlFor="rememberMe" className="text-sm font-medium">
+          Remember me
+        </Label>
+      </div>
+      {/* end remember me */}
       {errors.root && (
         <span role="alert" className={"text-sm text-destructive"}>
           {errors.root.message}
