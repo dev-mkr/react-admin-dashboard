@@ -28,7 +28,7 @@ type loginFormValues = {
 const LOGIN_URL = "/auth/login";
 
 function LoginForm() {
-  const { setAuth, setRememberMe } = useAuthStore((state) => state.actions);
+  const { setAuth } = useAuthStore((state) => state.actions);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -116,8 +116,9 @@ function LoginForm() {
       <div className="flex items-end space-x-2">
         <Checkbox
           id="rememberMe"
-          // onCheckedChange={(e) => localStorage.setItem("rememberMe", e.toString())}
-          onCheckedChange={(e) => setRememberMe(Boolean(e))}
+          onCheckedChange={(e) =>
+            localStorage.setItem("rememberMe", e.toString())
+          }
         />
         <Label htmlFor="rememberMe" className="text-sm font-medium">
           Remember me

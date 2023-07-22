@@ -3,7 +3,9 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuthStore from "@/store/useAuthStore";
 import GlobalLoader from "@/components/GlobalLoader";
 
-const ProtectedRoute = ({ persist = true }) => {
+const rememberMe = Boolean(localStorage.getItem("rememberMe"));
+
+const ProtectedRoute = () => {
   const auth = useAuthStore((state) => state.auth);
   const { refreshTheToken } = useAuthStore((state) => state.actions);
   const [isLoading, setIsLoading] = useState(!auth?.access_token);
@@ -22,7 +24,7 @@ const ProtectedRoute = ({ persist = true }) => {
       }
     };
 
-    if (!auth?.access_token && persist) {
+    if (!auth?.access_token && rememberMe) {
       verifyRefreshToken();
     } else {
       setIsLoading(false);
