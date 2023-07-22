@@ -1,15 +1,48 @@
-import useAuthStore from "@/store/useAuthStore";
+import { useState, useEffect } from "react";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
+import useAuthStore from "@/store/useAuthStore";
+import GlobalLoader from "@/components/GlobalLoader";
 
-const RequireAuth = () => {
+const ProtectedRoute = ({ persist = true }) => {
   const auth = useAuthStore((state) => state.auth);
+  const { refreshTheToken } = useAuthStore((state) => state.actions);
+  const [isLoading, setIsLoading] = useState(!auth?.access_token);
   const location = useLocation();
 
-  if (auth?.user && auth?.access_token) {
+  useEffect(() => {
+    let isMounted = true;
+
+    const verifyRefreshToken = async () => {
+      try {
+        await refreshTheToken();
+      } catch (err) {
+        console.error(err);
+      } finally {
+        isMounted && setIsLoading(false);
+      }
+    };
+
+    if (!auth?.access_token && persist) {
+      verifyRefreshToken();
+    } else {
+      setIsLoading(false);
+    }
+
+    return () => {
+      isMounted = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (isLoading) {
+    return <GlobalLoader />;
+  }
+
+  if (auth?.access_token) {
     return <Outlet />;
   } else {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 };
 
-export default RequireAuth;
+export default ProtectedRoute;
