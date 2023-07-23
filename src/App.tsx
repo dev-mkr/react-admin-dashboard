@@ -2,28 +2,32 @@ import { Routes, Route, Link } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
 import useAuthStore from "./store/useAuthStore";
-import RequireAuth from "@/components/auth/RequireAuth";
-import GlobalLoader from "./components/GlobalLoader";
+import useThemeStore from "./store/useThemeStore";
 // components
+import RequireAuth from "./components/auth/RequireAuth";
+import GlobalLoader from "./components/GlobalLoader";
 
 const Login = lazy(() => import("./pages/Login/Login"));
 const Register = lazy(() => import("./pages/Register/Register"));
 
 function App() {
   const { refreshTheToken, logOut } = useAuthStore((state) => state.actions);
+
+  const theme = useThemeStore((state) => state.theme);
+  if (
+    theme === "dark" ||
+    (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+
   return (
     <Suspense fallback={<GlobalLoader />}>
       <Routes>
         {/* public routes */}
-        <Route
-          path="login"
-          element={
-            <>
-              <Login />
-              <Link to="/">home</Link>
-            </>
-          }
-        />
+        <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         {/* private routes */}
         <Route element={<RequireAuth />}>

@@ -11,7 +11,7 @@ const AuthLayout = ({ children, headingText }: PropsType) => {
   return (
     <main className=" relative flex min-h-screen  flex-col gap-y-10   sm:justify-evenly lg:gap-y-16">
       <AuthHeader />
-      <h1 className="pt-12 text-center text-3xl font-semibold tracking-tight sm:text-5xl sm:max-lg:pt-20">
+      <h1 className="pt-16 text-center text-3xl font-semibold tracking-tight sm:text-5xl sm:max-lg:pt-20">
         {headingText}
       </h1>
 
