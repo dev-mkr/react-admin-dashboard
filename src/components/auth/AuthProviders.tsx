@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button/button";
-import { Google } from "@/assets/icons/Google";
-import { GitHub } from "@/assets/icons/GitHub";
-import { Facebook } from "@/assets/icons/Facebook";
+import { ReactComponent as Google } from "@/assets/icons/google.svg";
+import { ReactComponent as GitHub } from "@/assets/icons/github.svg";
+import { ReactComponent as Facebook } from "@/assets/icons/facebook.svg";
+
 type PropsType = {
   operationName: "Sign in" | "Sign up";
 };
@@ -10,8 +11,14 @@ function AuthProviders(props: PropsType) {
   const OPERATION_NAME = props.operationName;
   const RenderButton = ({ children }: { children: React.ReactNode }) => {
     return (
-      <Button variant="outline" title="SOON - under development">
-        <span className="flex min-w-[10rem]">{children}</span>
+      <Button
+        variant="outline"
+        className="relative justify-start"
+        title="SOON - under development"
+      >
+        <span className="absolute left-1/2 flex w-[70%] translate-x-[-50%] gap-5 md:w-[40%]">
+          {children}
+        </span>
       </Button>
     );
   };
@@ -24,13 +31,16 @@ function AuthProviders(props: PropsType) {
         </span>
       </div>
       <RenderButton>
-        <Google className="mr-2 h-4 w-4" /> {OPERATION_NAME} with google
+        <Google className="w-5" />
+        {OPERATION_NAME} with google
       </RenderButton>
       <RenderButton>
-        <GitHub className="mr-2 h-4 w-4" /> {OPERATION_NAME} with Github
+        <GitHub className="w-5" />
+        {OPERATION_NAME} with Github
       </RenderButton>
       <RenderButton>
-        <Facebook className="mr-2 h-4 w-4" /> {OPERATION_NAME} with Facebook
+        <Facebook className="w-5" />
+        {OPERATION_NAME} with Facebook
       </RenderButton>
     </section>
   );

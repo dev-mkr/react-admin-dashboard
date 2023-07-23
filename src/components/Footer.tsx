@@ -1,4 +1,4 @@
-import { MkrLogo } from "@/assets/icons/MkrLogo";
+import { ReactComponent as MkrLogo } from "@/assets/icons/mkr-logo.svg";
 
 const Footer = () => {
   return (
