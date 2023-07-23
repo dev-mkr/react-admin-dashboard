@@ -20,7 +20,6 @@ function App() {
           element={
             <>
               <Login />
-              <Link to="/">home</Link>
             </>
           }
         />
