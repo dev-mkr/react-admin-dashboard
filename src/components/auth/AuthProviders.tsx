@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
 import { ReactComponent as Google } from "@/assets/icons/google.svg";
 import { ReactComponent as GitHub } from "@/assets/icons/github.svg";
 import { ReactComponent as Facebook } from "@/assets/icons/facebook.svg";
