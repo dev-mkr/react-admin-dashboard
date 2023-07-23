@@ -16,7 +16,7 @@ function AuthProviders(props: PropsType) {
         className="relative justify-start"
         title="SOON - under development"
       >
-        <span className="absolute left-1/2 flex w-[70%] translate-x-[-50%] gap-5 md:w-[40%]">
+        <span className="absolute left-1/2 flex w-[70%] translate-x-[-50%] gap-x-4 md:w-[40%]">
           {children}
         </span>
       </Button>
