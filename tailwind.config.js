@@ -12,10 +12,14 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
+      padding: {
+        DEFAULT: "1rem",
+        sm: "2rem",
+        lg: "4rem",
       },
+      // screens: {
+      //   "2xl": "1400px",
+      // },
     },
     extend: {
       colors: {
@@ -71,6 +75,10 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      backgroundImage: {
+        "btn-gradient":
+          "linear-gradient(102.36deg,#64dbfc -2.26%,#30ffdf 34.48%,#fffe39 92.77%);",
       },
     },
   },

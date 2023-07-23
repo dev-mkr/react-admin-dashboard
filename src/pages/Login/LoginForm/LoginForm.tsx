@@ -2,90 +2,148 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button/button";
+import { ArrowRight } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/useAuthStore";
+import { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { Checkbox } from "@/components/ui/checkbox";
+
 const schema = yup.object().shape({
   email: yup.string().email().required("A valid email is required."),
   password: yup.string().required("Your password is required.").min(6),
 });
 
-type FormValues = {
+type loginFormValues = {
   email: string;
   password: string;
 };
 
+const LOGIN_URL = "/auth/login";
+
 function LoginForm() {
+  const { setAuth, setRememberMe } = useAuthStore((state) => state.actions);
+  const rememberMe = useAuthStore((state) => state.rememberMe);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
-    mode: "onBlur",
+    setError,
+  } = useForm<loginFormValues>({
+    mode: "onSubmit",
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-    // handle submitting the form
+  const onSubmit = async (values: loginFormValues) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(LOGIN_URL, values, {
+        withCredentials: true,
+      });
+      setAuth(response?.data);
+      setIsLoading(false);
+      navigate(from, { replace: true });
+    } catch (error) {
+      const errorResponse = error as AxiosError<{ message: string }>;
+      setError("root", {
+        message: errorResponse?.response?.data?.message,
+      });
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="container flex flex-col justify-around">
-      <h1 className=" text-3xl">Login</h1>
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex max-w-3xl flex-col justify-center gap-y-5 "
+    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-y-5">
+      {/* start email */}
+      <div className="grid gap-y-2">
+        <Label
+          htmlFor="email"
+          className={cn("", { "text-destructive": errors.email })}
+        >
+          Email
+        </Label>
+        <Input
+          type="text"
+          id="email"
+          autoFocus
+          placeholder="name@email.com"
+          aria-invalid={!!errors.email}
+          className={cn("", { "border-destructive": errors.email })}
+          {...register("email")}
+        />
+        {errors.email && (
+          <span role="alert" className={"text-sm text-destructive"}>
+            {errors.email.message}
+          </span>
+        )}
+      </div>
+      {/* end email */}
+      {/* start password */}
+      <div className="grid gap-y-2">
+        <Label
+          htmlFor="password"
+          className={cn("", { "text-destructive": errors.password })}
+        >
+          Password
+        </Label>
+        <Input
+          type="password"
+          id="password"
+          placeholder="Type your password"
+          aria-invalid={!!errors.password}
+          className={cn("", { "border-destructive": errors.password })}
+          {...register("password")}
+        />
+        {errors.password && (
+          <span role="alert" className={"text-sm text-destructive"}>
+            {errors.password.message}
+          </span>
+        )}
+      </div>
+      {/* end password */}
+      {/* start remember me */}
+      <div className="flex items-end space-x-2">
+        <Checkbox
+          id="rememberMe"
+          checked={rememberMe}
+          onCheckedChange={(e) => setRememberMe(Boolean(e))}
+        />
+        <Label htmlFor="rememberMe" className="text-sm font-medium">
+          Remember me
+        </Label>
+      </div>
+      {/* end remember me */}
+      {errors.root && (
+        <span role="alert" className={"text-sm text-destructive"}>
+          {errors.root.message}
+        </span>
+      )}
+      <Button
+        className="gap-x-2 bg-btn-gradient font-bold text-slate-900"
+        disabled={isLoading}
       >
-        {/* start email */}
-        <div className="">
-          <label
-            htmlFor="email"
-            className={`input-label ${errors.email && "text-red-500"}`}
-          >
-            Email
-          </label>
-          <input
-            type="text"
-            id="email"
-            placeholder="name@email.com"
-            aria-invalid={!!errors.email}
-            className={`input ${errors.email && "border-red-400 text-red-300"}`}
-            {...register("email")}
-          />
-          {errors.email && (
-            <span role="alert" className="mt-1 text-sm text-red-500">
-              {errors.email.message}
-            </span>
-          )}
-        </div>
-        {/* end email */}
-        {/* start password */}
-        <div className="">
-          <label
-            htmlFor="password"
-            className={`input-label ${errors.password && "text-red-500"}`}
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Type your password"
-            aria-invalid={!!errors.password}
-            className={`input ${errors.password && "border-red-400 text-red-300"}`}
-            {...register("password")}
-          />
-          {errors.password && (
-            <span role="alert" className="mt-1 text-sm text-red-500">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-        {/* end password */}
-        <button type="submit" className="submit-button">
-          Submit
-        </button>
-      </form>
-    </div>
+        Login to Your Account{" "}
+        {isLoading ? <Loader2 className="animate-spin" /> : <ArrowRight />}
+      </Button>
+      <span className="text-muted-foreground">
+        Don’t have an account yet?{" "}
+        <Link to="/register" className="text- text-foreground">
+          Register now!
+        </Link>
+      </span>
+    </form>
   );
 }
 

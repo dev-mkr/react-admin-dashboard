@@ -7,19 +7,28 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --ignore-path .gitignore --write \"src/**/*.{css,scss,ts,tsx,json,md}\"",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
+    "@radix-ui/react-checkbox": "^1.0.4",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-slot": "^1.0.2",
+    "axios": "^1.4.0",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "lucide-react": "^0.257.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
+    "react-router-dom": "^6.14.1",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6",
-    "yup": "^1.1.1"
+    "vite-plugin-svgr": "^3.2.0",
+    "yup": "^1.1.1",
+    "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@types/node": "^20.3.3",
@@ -32,11 +41,20 @@
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "postcss": "^8.4.23",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
+    "rollup-plugin-visualizer": "^5.9.2",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.4",
     "vite": "^4.3.2"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "yarn format",
+      "yarn lint"
+    ]
   }
 }
