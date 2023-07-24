@@ -6,6 +6,7 @@ import useThemeStore from "./store/useThemeStore";
 // components
 import RequireAuth from "./components/auth/RequireAuth";
 import GlobalLoader from "./components/GlobalLoader";
+import NotFound from "./components/NotFound";
 
 const Login = lazy(() => import("./pages/Login/Login"));
 const Register = lazy(() => import("./pages/Register/Register"));
@@ -42,6 +43,7 @@ function App() {
             }
           />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );
