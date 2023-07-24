@@ -4,7 +4,7 @@ import * as yup from "yup";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
