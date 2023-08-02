@@ -3,3 +3,12 @@ React dashboard is an open-source admin dashboard. powerful tool for visualizing
 
 __Stack: Typescript, reactjs with vite, zustand, apexchart, tailwindcss, swr, axios, react-hook-form and more.__
 
+## Main features ✨ 
+- 🔒 User Authentications with JWt tokens saved in http-only cookie and refresh tokens
+- 🚦  Covring errors and loading states
+- 📊 User-friendly charts that provide insightful data visualization
+- 🎨 Fully customizable themes, dark and light for now
+- 🗂️ Tables with full crud operations, pagination, search, filter, and more
+- 💫 Buttery-smooth experience with every feature
+  
+__And more is coming__
