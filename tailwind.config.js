@@ -13,8 +13,8 @@ module.exports = {
     container: {
       center: true,
       padding: {
-        DEFAULT: "1rem",
-        sm: "2rem",
+        DEFAULT: "0.5rem",
+        sm: "1rem",
         lg: "4rem",
       },
       // screens: {
@@ -77,8 +77,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
-        "btn-gradient":
-          "linear-gradient(102.36deg,#64dbfc -2.26%,#30ffdf 34.48%,#fffe39 92.77%);",
+        "btn-gradient": "linear-gradient(102.36deg,#64dbfc -2.26%,#30ffdf 34.48%,#fffe39 92.77%);",
       },
     },
   },

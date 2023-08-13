@@ -1,6 +1,6 @@
 import useAuthStore from "@/store/useAuthStore";
 import axios from "axios";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 const useAxiosPrivate = () => {
   const auth = useAuthStore((state) => state.auth);
@@ -9,7 +9,7 @@ const useAxiosPrivate = () => {
   );
   const axiosPrivate = axios;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
         if (!config.headers.Authorization) {
@@ -24,7 +24,11 @@ const useAxiosPrivate = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
+
+        if (
+          error?.response?.status === 403 ||
+          (error?.response?.status === 401 && !prevRequest?.sent)
+        ) {
           prevRequest.sent = true;
           const newAccessToken = await refreshTheToken();
           prevRequest.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -38,7 +42,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [auth?.access_token, axiosPrivate, refreshTheToken]);
+  }, [auth, axiosPrivate, refreshTheToken]);
 
   return axiosPrivate;
 };

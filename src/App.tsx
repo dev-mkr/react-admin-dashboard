@@ -6,10 +6,11 @@ import useThemeStore from "./store/useThemeStore";
 import RequireAuth from "./components/auth/RequireAuth";
 import GlobalLoader from "./components/GlobalLoader";
 import NotFound from "./components/NotFound";
+import DashboardLayout from "./components/layout/DashboardLayout";
 
 const Login = lazy(() => import("./pages/Login/Login"));
 const Register = lazy(() => import("./pages/Register/Register"));
-const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
+const Overview = lazy(() => import("./pages/Overview/Overview"));
 
 function App() {
   const theme = useThemeStore((state) => state.theme);
@@ -30,8 +31,8 @@ function App() {
         <Route path="register" element={<Register />} />
         {/* private routes */}
         <Route element={<RequireAuth />}>
-          <Route element={<Dashboard />}>
-            <Route path="/" element={<h1>Home</h1>} />
+          <Route element={<DashboardLayout />}>
+            <Route path="/" element={<Overview />} />
             <Route path="calender" element={<h1>calender</h1>} />
           </Route>
         </Route>
