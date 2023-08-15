@@ -19,7 +19,7 @@ const AuthLayout = ({ children, headingText }: PropsType) => {
         <Scratch className="absolute left-0 top-1/3 -z-10 max-sm:hidden" />
         {children}
       </div>
-      <Footer />
+      <Footer className="container" />
     </main>
   );
 };

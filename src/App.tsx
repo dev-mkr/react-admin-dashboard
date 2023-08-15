@@ -1,18 +1,18 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
-import useAuthStore from "./store/useAuthStore";
 import useThemeStore from "./store/useThemeStore";
 // components
 import RequireAuth from "./components/auth/RequireAuth";
 import GlobalLoader from "./components/GlobalLoader";
+import NotFound from "./components/NotFound";
+import DashboardLayout from "./components/layout/DashboardLayout";
 
 const Login = lazy(() => import("./pages/Login/Login"));
 const Register = lazy(() => import("./pages/Register/Register"));
+const Overview = lazy(() => import("./pages/Overview/Overview"));
 
 function App() {
-  const { refreshTheToken, logOut } = useAuthStore((state) => state.actions);
-
   const theme = useThemeStore((state) => state.theme);
   if (
     theme === "dark" ||
@@ -31,17 +31,12 @@ function App() {
         <Route path="register" element={<Register />} />
         {/* private routes */}
         <Route element={<RequireAuth />}>
-          <Route
-            path="/"
-            element={
-              <>
-                <button onClick={() => refreshTheToken()}>refresh</button>
-                <button onClick={() => logOut()}>logOut</button>
-                <Link to="/login">login</Link>
-              </>
-            }
-          />
+          <Route element={<DashboardLayout />}>
+            <Route path="/" element={<Overview />} />
+            <Route path="calender" element={<h1>calender</h1>} />
+          </Route>
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );
