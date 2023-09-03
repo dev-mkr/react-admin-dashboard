@@ -21,7 +21,12 @@ const DashboardLayout = () => {
   const handelToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
+// make it simpler 
+//   onClick={(event) => {
+//   if (event.target === event.currentTarget) {
+//     setOpenModal(false);
+//   }
+// }}
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (!sidebarRef?.current?.contains(event.target as Node)) {
